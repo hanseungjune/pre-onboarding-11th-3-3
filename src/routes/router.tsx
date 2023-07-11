@@ -1,6 +1,6 @@
-import App from '@/App';
-import Issue from '@/pages/Issue';
-import NotFound from '@/pages/NotFound';
+import App from 'App';
+import Issue from 'pages/Issue';
+import NotFound from 'pages/NotFound';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
