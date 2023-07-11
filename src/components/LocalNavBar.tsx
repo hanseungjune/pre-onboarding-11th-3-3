@@ -47,7 +47,7 @@ const LocalNavBarStyle = styled.nav`
         span {
           font-size: 0.75rem;
           padding: 0 6px;
-          background-color: rgba(110, 118, 129, 0.4);
+          background-color: ${COLOR.DarkCountSpan};
           height: 20px;
           border-radius: 10px;
           display: flex;

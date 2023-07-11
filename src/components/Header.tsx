@@ -39,7 +39,7 @@ const Header = () => {
 export default Header;
 
 const HeaderStyle = styled.div`
-  border-bottom: 1px solid #21262d;
+  border-bottom: 1px solid ${COLOR.DarkBorder};
   background-color: ${COLOR.DarkHeaderBg};
 `;
 
@@ -56,8 +56,6 @@ const GlobalBarStyle = styled.div<{
   h1 {
     display: flex;
     align-items: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 
     span {
       color: #7d8590;
