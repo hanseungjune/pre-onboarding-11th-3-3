@@ -61,7 +61,7 @@ const LocalNavBarStyle = styled.nav`
           width: 100%;
           height: 2px;
           background-color: ${COLOR.LocalNavFocus};
-          bottom: 0;
+          bottom: -1px;
         }
       }
     }
