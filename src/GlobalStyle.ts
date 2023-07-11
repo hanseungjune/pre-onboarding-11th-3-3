@@ -1,5 +1,6 @@
+import { reset } from 'styled-reset';
 import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
+import COLOR from 'constants/color';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -8,6 +9,12 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    color: ${COLOR.DarkText};
+  }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    background-color: ${COLOR.DarkBodyBg};
   }
   
   ul,li {
@@ -25,6 +32,11 @@ const GlobalStyle = createGlobalStyle`
   input {
     width: 100%;
     height: 100%;
+  }
+
+  a {
+    text-decoration: none;
+    color:inherit;
   }
 `;
 
