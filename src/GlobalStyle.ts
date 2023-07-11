@@ -10,6 +10,15 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     color: ${COLOR.DarkText};
+
+    &::-webkit-scrollbar {
+      width:5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color:${COLOR.DarkBorder};
+      border-radius: 10px;
+    }
   }
 
   body {
