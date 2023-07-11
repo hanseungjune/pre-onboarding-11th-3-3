@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { GoIssueOpened } from 'react-icons/go';
-import COLOR from 'constants/color';
+import COLOR from '@/constants/color';
 
 const LocalNavBar = () => {
   return (

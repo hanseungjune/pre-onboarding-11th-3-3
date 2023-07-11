@@ -1,8 +1,8 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import COLOR from 'constants/color';
 import LocalNavBar from './LocalNavBar';
+import COLOR from '@/constants/color';
 
 const Header = () => {
   const location = useLocation().pathname;
