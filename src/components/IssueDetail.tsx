@@ -5,6 +5,8 @@ import { useIssue } from 'context/IssueContext';
 import { IIssueDetail } from 'interface/issue';
 import COLOR from 'constants/color';
 import { useLocation } from 'react-router-dom';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const IssueDetail = () => {
   const [detail, setDetail] = useState<IIssueDetail>();
@@ -29,7 +31,9 @@ const IssueDetail = () => {
             <TitleAreaStyle>
               <IssueItem data={detail} />
             </TitleAreaStyle>
-            <p>{detail.body}</p>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {detail.body}
+            </ReactMarkdown>
           </>
         ) : (
           'Loading...'
@@ -43,13 +47,19 @@ export default IssueDetail;
 
 const IssueDetailStyle = styled.div`
   width: calc(100% - 430px);
+  height: calc(100vh - 109px);
   padding: 32px;
   display: flex;
   justify-content: center;
+  overflow: auto;
 `;
 
 const IssueDetailInnerStyle = styled.div`
   width: 80%;
+
+  img {
+    width: 100%;
+  }
 `;
 
 const TitleAreaStyle = styled.div`
