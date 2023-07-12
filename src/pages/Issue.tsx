@@ -1,13 +1,20 @@
 import IssueList from 'components/IssueList';
 import React from 'react';
 import { styled } from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Issue = () => {
+  const location = useLocation().pathname;
   return (
     <IssueStyle>
       <IssueList />
-      <Outlet />
+      {location === '/' ? (
+        <EmptyIssueDetailStyle>
+          <img src="/images/empty.png" alt="Empty" />
+        </EmptyIssueDetailStyle>
+      ) : (
+        <Outlet />
+      )}
     </IssueStyle>
   );
 };
@@ -16,4 +23,12 @@ export default Issue;
 
 const IssueStyle = styled.section`
   display: flex;
+`;
+
+const EmptyIssueDetailStyle = styled.div`
+  width: calc(100% - 430px);
+  display: flex;
+  padding: 32px;
+  justify-content: center;
+  align-items: center;
 `;
