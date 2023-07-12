@@ -1,28 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
-import { IIssue } from 'interface/issue';
 import IssueItem from './IssueItem';
+import { useIssue } from 'context/IssueContext';
+import { IIssueDetail } from 'interface/issue';
+import COLOR from 'constants/color';
+import { useLocation } from 'react-router-dom';
 
 const IssueDetail = () => {
-  const [issueDetail, setIssueDetail] = useState<IIssue>();
+  const [detail, setDetail] = useState<IIssueDetail>();
+  const { issueDetail }: any = useIssue();
+  const location = useLocation().pathname;
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('mockData/issueDetail.json');
-        const data = await response.json();
-        setIssueDetail(data);
+        setDetail(await issueDetail(location));
       } catch (error) {
         console.log(error);
       }
     })();
-  }, []);
-
-  console.log(issueDetail);
+  }, [location, issueDetail]);
 
   return (
     <IssueDetailStyle>
-      {issueDetail && <IssueItem data={issueDetail} />}
+      <IssueDetailInnerStyle>
+        {detail ? (
+          <>
+            <TitleAreaStyle>
+              <IssueItem data={detail} />
+            </TitleAreaStyle>
+            <p>{detail.body}</p>
+          </>
+        ) : (
+          'Loading...'
+        )}
+      </IssueDetailInnerStyle>
     </IssueDetailStyle>
   );
 };
@@ -30,6 +42,20 @@ const IssueDetail = () => {
 export default IssueDetail;
 
 const IssueDetailStyle = styled.div`
-  width: calc(100% - 400px);
-  padding: 16px;
+  width: calc(100% - 430px);
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+`;
+
+const IssueDetailInnerStyle = styled.div`
+  width: 80%;
+`;
+
+const TitleAreaStyle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  border-bottom: 2px solid ${COLOR.DarkCountSpan};
 `;

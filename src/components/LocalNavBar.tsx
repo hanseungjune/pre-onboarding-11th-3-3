@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 import { GoIssueOpened } from 'react-icons/go';
 import COLOR from 'constants/color';
 
-const LocalNavBar = () => {
+interface Props {
+  openIssues: number;
+}
+
+const LocalNavBar = ({ openIssues }: Props) => {
   return (
     <LocalNavBarStyle>
       <ul>
@@ -12,7 +16,7 @@ const LocalNavBar = () => {
           <Link to="">
             <GoIssueOpened />
             Issues
-            <span>1k</span>
+            <span>{openIssues}</span>
           </Link>
         </li>
       </ul>

@@ -2,24 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { BsListCheck } from 'react-icons/bs';
 import COLOR from 'constants/color';
-import { IIssue } from 'interface/issue';
 import { Link } from 'react-router-dom';
 import IssueItem from './IssueItem';
+import { useIssue } from 'context/IssueContext';
+import { IIssue } from 'interface/issue';
 
 const IssueList = () => {
   const [list, setList] = useState<IIssue[]>([]);
+  const { issueList }: any = useIssue();
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('mockData/issueList.json');
-        const data = await response.json();
-        setList(data);
+        setList(await issueList(2));
       } catch (error) {
         console.log(error);
       }
     })();
-  }, []);
+  }, [issueList, setList]);
 
   return (
     <IssueListStyle>
@@ -28,14 +28,15 @@ const IssueList = () => {
         Issue List
       </h2>
       <IssueUlStyle>
-        {list.length > 0 &&
-          list.map(issue => (
-            <IssueLiStyle key={issue.issueNum}>
-              <Link to={`/${issue.issueNum}`}>
-                <IssueItem data={issue} />
-              </Link>
-            </IssueLiStyle>
-          ))}
+        {list.length > 0
+          ? list.map(issue => (
+              <IssueLiStyle key={issue.id}>
+                <Link to={`/${issue.number}`}>
+                  <IssueItem data={issue} />
+                </Link>
+              </IssueLiStyle>
+            ))
+          : 'Loading...'}
       </IssueUlStyle>
     </IssueListStyle>
   );
@@ -44,7 +45,7 @@ const IssueList = () => {
 export default IssueList;
 
 const IssueListStyle = styled.div`
-  width: 400px;
+  width: 430px;
   height: calc(100vh - 109px);
   border-right: 1px solid ${COLOR.DarkBorder};
 
@@ -84,10 +85,6 @@ const IssueLiStyle = styled.li`
     h3 {
       text-decoration: underline;
       color: ${COLOR.White};
-    }
-
-    span {
-      background-color: rgba(255, 255, 255, 0.25);
     }
   }
 `;
