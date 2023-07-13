@@ -4,7 +4,7 @@ import IssueItem from './IssueItem';
 import { useIssue } from 'context/IssueContext';
 import { IIssueDetail } from 'interface/issue';
 import COLOR from 'constants/color';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Loading from './common/Loading';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -16,19 +16,20 @@ import rehypeRaw from 'rehype-raw';
 const IssueDetail = () => {
   const [detail, setDetail] = useState<IIssueDetail>();
   const { issueDetail }: any = useIssue();
-  const location = useLocation().pathname;
+  const params = useParams().id;
+  console.log(params);
 
   const getIssueDetail = useCallback(async () => {
     try {
-      setDetail(await issueDetail(location));
+      setDetail(await issueDetail(`/${params}`));
     } catch (error) {
       console.log(error);
     }
-  }, [issueDetail, location]);
+  }, [issueDetail, params]);
 
   useEffect(() => {
     getIssueDetail();
-  }, [location, issueDetail, getIssueDetail]);
+  }, [params, issueDetail, getIssueDetail]);
 
   return (
     <IssueDetailStyle>
