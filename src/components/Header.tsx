@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { styled } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import COLOR from 'constants/color';
@@ -14,15 +14,17 @@ const Header = () => {
   });
   const { repository }: any = useIssue();
 
+  const getRepository = useCallback(async () => {
+    try {
+      setTitle(await repository());
+    } catch (error) {
+      console.log(error);
+    }
+  }, [repository]);
+
   useEffect(() => {
-    (async () => {
-      try {
-        setTitle(await repository());
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [repository, setTitle]);
+    getRepository();
+  }, [getRepository, repository, setTitle]);
 
   const RepoTitle = title.full_name.split('/');
 

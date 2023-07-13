@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { styled } from 'styled-components';
 import IssueItem from './IssueItem';
 import { useIssue } from 'context/IssueContext';
@@ -18,15 +18,17 @@ const IssueDetail = () => {
   const { issueDetail }: any = useIssue();
   const location = useLocation().pathname;
 
+  const getIssueDetail = useCallback(async () => {
+    try {
+      setDetail(await issueDetail(location));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [issueDetail, location]);
+
   useEffect(() => {
-    (async () => {
-      try {
-        setDetail(await issueDetail(location));
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [location, issueDetail]);
+    getIssueDetail();
+  }, [location, issueDetail, getIssueDetail]);
 
   return (
     <IssueDetailStyle>

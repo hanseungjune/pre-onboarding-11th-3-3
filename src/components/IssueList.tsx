@@ -23,10 +23,10 @@ const IssueList = () => {
   const getIssueList = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await issueList(page);
-      if (res) {
+      const response = await issueList(page);
+      if (response) {
         endRef.current = true;
-        setList(prev => [...prev, ...res]);
+        setList(prev => [...prev, ...response]);
         preventRef.current = true;
       }
     } catch (error) {
@@ -34,11 +34,11 @@ const IssueList = () => {
     } finally {
       setLoading(false);
     }
-  }, [page]);
+  }, [issueList, page]);
 
   useEffect(() => {
     getIssueList();
-  }, [page]);
+  }, [getIssueList, page]);
 
   InfiniteScroll({ preventRef, obsRef, setPage });
 
