@@ -27,6 +27,7 @@ const IssueStyle = styled.section`
 `;
 
 const EmptyIssueDetailStyle = styled.div`
+  width: calc(100% - 430px);
   display: flex;
   padding: 32px;
   justify-content: center;

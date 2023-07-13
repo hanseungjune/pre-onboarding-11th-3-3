@@ -77,6 +77,8 @@ const GlobalBarStyle = styled.div<{
   h1 {
     display: flex;
     align-items: center;
+    font-size: 14px;
+    font-weight: normal;
 
     span {
       color: #7d8590;
