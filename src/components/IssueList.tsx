@@ -49,14 +49,34 @@ const IssueList = () => {
         Issue List
       </h2>
       <IssueUlStyle>
-        {list.length > 0 &&
-          list.map(issue => (
-            <IssueLiStyle key={issue.number}>
-              <Link to={`/${issue.number}`}>
-                <IssueItem data={issue} />
+        {list.length > 0 ? (
+          list.map((issue, index) => (
+            <IssueLiStyle key={index}>
+              <Link
+                to={
+                  (index + 1) % 5 === 0
+                    ? 'https://www.wanted.co.kr/'
+                    : `${issue.number}`
+                }
+              >
+                {(index + 1) % 5 === 0 ? (
+                  <img
+                    src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fuserweb%2Flogo_wanted_black.png&w=110&q=100"
+                    alt="광고"
+                  />
+                ) : (
+                  <IssueItem data={issue} />
+                )}
               </Link>
             </IssueLiStyle>
-          ))}
+          ))
+        ) : (
+          <img
+            src="/images/listEmpty.png"
+            alt="listEmpty"
+            className="imptyImg"
+          />
+        )}
         {loading && <Loading />}
         <div ref={obsRef} />
       </IssueUlStyle>
@@ -88,6 +108,15 @@ const IssueUlStyle = styled.ul`
   padding: 16px;
   overflow-y: auto;
   height: calc(100% - 62px);
+  position: relative;
+
+  .imptyImg {
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const IssueLiStyle = styled.li`
@@ -98,6 +127,12 @@ const IssueLiStyle = styled.li`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    img {
+      background-color: #fff;
+      height: 100%;
+      padding: 0 35%;
+    }
   }
 
   &:hover {
