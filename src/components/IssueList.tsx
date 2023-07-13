@@ -86,7 +86,6 @@ export default IssueList;
 
 const IssueListStyle = styled.div`
   width: 430px;
-  height: calc(100vh - 109px);
   border-right: 1px solid ${COLOR.DarkBorder};
 
   h2 {
