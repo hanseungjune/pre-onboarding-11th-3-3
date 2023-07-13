@@ -14,7 +14,7 @@ export class IssueApi {
 
   async issueList(page) {
     const response = await this.httpClient.fetch(
-      `${url}/issues?sort=comments&per_page=25&page=${page}`,
+      `${url}/issues?sort=comments&per_page=15&page=${page}`,
       {
         method: 'GET',
       }
