@@ -4,7 +4,6 @@ export interface IRepository {
 }
 
 export interface IIssue {
-  id: number;
   number: number;
   title: string;
   comments: number;

@@ -51,7 +51,7 @@ const IssueList = () => {
       <IssueUlStyle>
         {list.length > 0 &&
           list.map(issue => (
-            <IssueLiStyle key={issue.id}>
+            <IssueLiStyle key={issue.number}>
               <Link to={`/${issue.number}`}>
                 <IssueItem data={issue} />
               </Link>
