@@ -7,47 +7,23 @@ import IssueItem from './IssueItem';
 import { useIssue } from 'context/IssueContext';
 import { IIssue } from 'interface/issue';
 import Loading from './common/Loading';
+import InfiniteScroll from './utils/InfiniteScroll';
 
 const IssueList = () => {
   const [list, setList] = useState<IIssue[]>([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const { issueList }: any = useIssue();
 
-  const [loading, setLoading] = useState(false);
   const preventRef = useRef(true);
   const obsRef = useRef(null);
   const endRef = useRef(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(obsHandler, {
-      threshold: 0.5,
-      rootMargin: '80px',
-    });
-    if (obsRef.current) observer.observe(obsRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    getPost();
-  }, [page]);
-
-  const obsHandler = (entries: any) => {
-    const target = entries[0];
-    if (target.isIntersecting && preventRef.current) {
-      preventRef.current = false;
-      setPage(prev => prev + 1);
-    }
-  };
-
-  const getPost = useCallback(async () => {
+  const getIssueList = useCallback(async () => {
     setLoading(true);
     try {
       const res = await issueList(page);
-      console.log(res);
       if (res) {
         endRef.current = true;
         setList(prev => [...prev, ...res]);
@@ -59,6 +35,12 @@ const IssueList = () => {
       setLoading(false);
     }
   }, [page]);
+
+  useEffect(() => {
+    getIssueList();
+  }, [page]);
+
+  InfiniteScroll({ preventRef, obsRef, setPage });
 
   return (
     <IssueListStyle>
