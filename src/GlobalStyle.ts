@@ -1,9 +1,9 @@
-import { reset } from 'styled-reset';
 import { createGlobalStyle } from 'styled-components';
 import COLOR from './constants/color';
+import normalize from 'styled-normalize';
 
 const GlobalStyle = createGlobalStyle`
-  ${reset}
+  ${normalize}
 
   * {
     box-sizing: border-box;
