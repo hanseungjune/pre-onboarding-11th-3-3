@@ -5,9 +5,13 @@ import { useIssue } from 'context/IssueContext';
 import { IIssueDetail } from 'interface/issue';
 import COLOR from 'constants/color';
 import { useLocation } from 'react-router-dom';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
-import remarkGfm from 'remark-gfm';
 import Loading from './common/Loading';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { CodeProps } from 'react-markdown/lib/ast-to-react';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const IssueDetail = () => {
   const [detail, setDetail] = useState<IIssueDetail>();
@@ -33,9 +37,37 @@ const IssueDetail = () => {
               <img src={detail.user.avatar_url} alt={detail.user.login} />
               <IssueItem data={detail} />
             </TitleAreaStyle>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {detail.body}
-            </ReactMarkdown>
+            <DescAreaStyle>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                children={detail.body}
+                components={{
+                  code({
+                    node,
+                    inline,
+                    className,
+                    style,
+                    children,
+                    ...props
+                  }: CodeProps) {
+                    const match = /language-(\w+)/.exec(className || '');
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        children={String(children).replace(/\n$/, '')}
+                        language={match[1]}
+                        style={materialDark}
+                        {...props}
+                      />
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              />
+            </DescAreaStyle>
           </>
         ) : (
           <Loading />
@@ -49,15 +81,14 @@ export default IssueDetail;
 
 const IssueDetailStyle = styled.div`
   width: calc(100% - 430px);
-  height: calc(100vh - 109px);
-  padding: 32px;
   display: flex;
   justify-content: center;
   overflow: auto;
 `;
 
 const IssueDetailInnerStyle = styled.div`
-  width: 80%;
+  padding-top: 36px;
+  width: 65%;
 
   img {
     width: 100%;
@@ -77,7 +108,11 @@ const TitleAreaStyle = styled.div`
   }
 
   img {
-    width: 5%;
+    width: 50px;
     border-radius: 50%;
   }
+`;
+
+const DescAreaStyle = styled.div`
+  padding-bottom: 52px;
 `;
