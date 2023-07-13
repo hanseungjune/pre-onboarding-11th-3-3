@@ -119,7 +119,7 @@
 
 ```
 
-### GitHub Issues
+### GitHub Issues Web Page
 
 #### ❓ 선정이유
 
@@ -143,41 +143,41 @@
 
     ```
 
-  - ❌ Bad
+- ❌ Bad
 
-    - useEffect의 콜백함수는 바로 비동기적일 수 없습니다. 비동기적인 함수를 바로 콜백 함수로 넣을 수 없기 때문에, getData라는 비동기 함수를 useEffect가 실행될 때마다 생성해주고, 그 안에서 데이터를 가져오고 setData를 해주게 됩니다. 그리고 만든 getData라는 함수를 실행하게 됩니다. useEffect가 실행될 때마다 매번 함수가 생성되고 실행되니 매우 비효율적입니다.
+  1.  useEffect의 콜백함수는 바로 비동기적일 수 없습니다. 비동기적인 함수를 바로 콜백 함수로 넣을 수 없기 때문에, getData라는 비동기 함수를 useEffect가 실행될 때마다 생성해주고, 그 안에서 데이터를 가져오고 setData를 해주게 됩니다. 그리고 만든 getData라는 함수를 실행하게 됩니다. useEffect가 실행될 때마다 매번 함수가 생성되고 실행되니 매우 비효율적입니다.
 
-    ```Javascript
-      useEffect(() => {
-        (async () => {
-          try {
-            setDetail(await issueDetail(location));
-          } catch (error) {
-            console.log(error);
-          }
-        })();
-      }, [location, issueDetail]);
-    ```
-
-  - ⭕ Good
-
-    - useCallback을 활용하면, useCallback안에서 데이터를 가져오는 콜백 함수를 getData에 넣어주고, useEffect안에서는 getData만 호출을 해주면 코드가 훨씬 깔끔해지고, 로직도 분리되며 가독성도 올라가는 효과를 얻을 수 있습니다.
-
-    ```Javascript
-      const getIssueDetail = useCallback(async () => {
+  ```Javascript
+    useEffect(() => {
+      (async () => {
         try {
           setDetail(await issueDetail(location));
         } catch (error) {
           console.log(error);
         }
-      }, [issueDetail, location]);
+      })();
+    }, [location, issueDetail]);
+  ```
 
-      useEffect(() => {
-        getIssueDetail();
-      }, [location, issueDetail, getIssueDetail]);
-    ```
+- ⭕ Good
 
-  <br/>
+  1.  useCallback을 활용하면, useCallback안에서 데이터를 가져오는 콜백 함수를 getData에 넣어주고, useEffect안에서는 getData만 호출을 해주면 코드가 훨씬 깔끔해지고, 로직도 분리되며 가독성도 올라가는 효과를 얻을 수 있습니다.
+
+  ```Javascript
+    const getIssueDetail = useCallback(async () => {
+      try {
+        setDetail(await issueDetail(location));
+      } catch (error) {
+        console.log(error);
+      }
+    }, [issueDetail, location]);
+
+    useEffect(() => {
+      getIssueDetail();
+    }, [location, issueDetail, getIssueDetail]);
+  ```
+
+<br/>
 
 ## ✒️ 회고
 
