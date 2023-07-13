@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 import IssueItem from './IssueItem';
 import { useIssue } from 'context/IssueContext';
 import { IIssue } from 'interface/issue';
-import Lottie from 'lottie-react';
-import LoadingLottie from 'lotties/loading.json';
+import Loading from './common/Loading';
 
 const IssueList = () => {
   const [list, setList] = useState<IIssue[]>([]);
@@ -76,15 +75,7 @@ const IssueList = () => {
               </Link>
             </IssueLiStyle>
           ))}
-        {loading && (
-          <LottieWrap>
-            <Lottie
-              animationData={LoadingLottie}
-              loop={true}
-              className="loading"
-            />
-          </LottieWrap>
-        )}
+        {loading && <Loading />}
         <div ref={obsRef} />
       </IssueUlStyle>
     </IssueListStyle>
@@ -116,17 +107,6 @@ const IssueUlStyle = styled.ul`
   padding: 16px;
   overflow-y: auto;
   height: calc(100% - 62px);
-`;
-
-const LottieWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .loading {
-    width: 50px;
-  }
 `;
 
 const IssueLiStyle = styled.li`

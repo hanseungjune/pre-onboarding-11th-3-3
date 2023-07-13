@@ -7,6 +7,7 @@ import COLOR from 'constants/color';
 import { useLocation } from 'react-router-dom';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import remarkGfm from 'remark-gfm';
+import Loading from './common/Loading';
 
 const IssueDetail = () => {
   const [detail, setDetail] = useState<IIssueDetail>();
@@ -36,7 +37,7 @@ const IssueDetail = () => {
             </ReactMarkdown>
           </>
         ) : (
-          'Loading...'
+          <Loading />
         )}
       </IssueDetailInnerStyle>
     </IssueDetailStyle>
