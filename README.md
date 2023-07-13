@@ -11,6 +11,39 @@
 ## 🧭 목적
 
 - 동료학습 및 협업능력과 새로운 인사이트
+- [GitHub REST API](https://docs.github.com/en/rest?apiVersion=2022-11-28)로 GitHub Issue 페이지 구현하기
+
+<br/>
+
+## ✅ Task
+
+### ❗필수 요구 사항
+
+- [ ] 이슈 목록 및 상세 화면 기능 구현
+- [ ] Context API를 활용한 API 연동
+- [ ] 데이터 요청 중 로딩 표시
+- [ ] 에러 화면 구현
+- [ ] 지정된 조건(open 상태, 코멘트 많은 순)에 맞게 데이터 요청 및 표시
+
+### ❗범위
+
+1. 이슈 목록 화면
+
+   - [ ] 이슈 목록 가져오기 API 활용
+   - [ ] open 상태의 이슈 중 코멘트가 많은 순으로 정렬
+   - [ ] 각 행에는 ‘이슈번호, 이슈제목, 작성자, 작성일, 코멘트수’를 표시
+   - [ ] 다섯번째 셀마다 광고 이미지 출력
+   - [ ] 화면을 아래로 스크롤 할 시 이슈 목록 추가 로딩(인피니티 스크롤)
+
+2. 이슈 상세 화면
+
+   - [ ] 이슈의 상세 내용 표시
+   - [ ] ‘이슈번호, 이슈제목, 작성자, 작성일, 코멘트 수, 작성자 프로필 이미지, 본문' 표시
+
+3. 공통 헤더
+
+   - [ ] 두 페이지는 공통 헤더를 공유합니다.
+   - [ ] 헤더에는 Organization Name / Repository Name이 표시됩니다.
 
 <br/>
 
@@ -79,7 +112,7 @@
 ## 🛠️ Stacks
 
 ![react](https://user-images.githubusercontent.com/123078739/234895132-18ab503a-fcc7-486d-b89a-cb0cc1f7796b.svg) ![eslint](https://user-images.githubusercontent.com/123078739/234895191-c1198a7b-9e2e-499a-8e61-c3b87bf8e2c2.svg)
-![prettier](https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black) ![Axios](https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white) ![typescript](https://user-images.githubusercontent.com/123078739/234895162-42f905c6-765d-44d2-bcb1-b011286ef6b2.svg) ![styledcomponents](https://user-images.githubusercontent.com/123078739/234895185-7fd6c334-faca-4520-8551-2f20b32f085e.svg)
+![prettier](https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black) ![typescript](https://user-images.githubusercontent.com/123078739/234895162-42f905c6-765d-44d2-bcb1-b011286ef6b2.svg) ![styledcomponents](https://user-images.githubusercontent.com/123078739/234895185-7fd6c334-faca-4520-8551-2f20b32f085e.svg)
 
 <br/>
 
@@ -139,9 +172,11 @@
 
 - 해결
 
-  - ```Javascript
+  -
 
-    ```
+  ```Javascript
+
+  ```
 
 - ❌ Bad
 
