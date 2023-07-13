@@ -135,8 +135,6 @@
 
   ```
 
-  - 중첩객체에 접근할 수 없습니다. `ex) Github Api의 user안에 login, avatar_url 객체`
-
   <br/>
 
 - 해결

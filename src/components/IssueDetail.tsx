@@ -30,6 +30,7 @@ const IssueDetail = () => {
         {detail ? (
           <>
             <TitleAreaStyle>
+              <img src={detail.user.avatar_url} alt={detail.user.login} />
               <IssueItem data={detail} />
             </TitleAreaStyle>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -69,4 +70,14 @@ const TitleAreaStyle = styled.div`
   padding: 16px 0;
   margin-bottom: 16px;
   border-bottom: 2px solid ${COLOR.DarkCountSpan};
+  gap: 16px;
+
+  > div {
+    margin-right: auto;
+  }
+
+  img {
+    width: 5%;
+    border-radius: 50%;
+  }
 `;

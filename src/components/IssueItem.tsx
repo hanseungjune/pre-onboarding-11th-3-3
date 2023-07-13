@@ -15,7 +15,7 @@ const IssueItem = ({ data }: Props) => {
     <>
       <TitleAreaStyle>
         <h3>{`#${data.number} ${data.title}`}</h3>
-        <p>{`updated on ${date} by ${data.user}`}</p>
+        <p>{`updated on ${date} by ${data.user.login}`}</p>
       </TitleAreaStyle>
       {data.comments > 0 && (
         <CommentStyle>
