@@ -14,7 +14,7 @@ const IssueList = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { issueList }: any = useIssue();
+  const { issueList } = useIssue();
 
   const preventRef = useRef(true);
   const obsRef = useRef(null);

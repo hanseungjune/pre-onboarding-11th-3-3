@@ -1,9 +1,11 @@
+import { HttpClient } from "httpClient/httpClient";
+
 const url = '/repos/facebook/react';
 
 export class IssueApi {
-  private httpClient: any;
+  private httpClient: HttpClient;
 
-  constructor(httpClient: any) {
+  constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
   }
 
@@ -25,7 +27,7 @@ export class IssueApi {
   }
 
   async issueDetail(issueNum: number) {
-    const response = await this.httpClient.fetch(`${url}/issues${issueNum}`, {
+    const response = await this.httpClient.fetch(`${url}/issues/${issueNum}`, {
       method: 'GET',
     });
     if (response.status === 200) {

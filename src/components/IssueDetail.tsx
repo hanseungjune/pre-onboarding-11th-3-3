@@ -17,13 +17,13 @@ import { ImWarning } from 'react-icons/im';
 const IssueDetail = () => {
   const [detail, setDetail] = useState<IIssueDetail>();
   const [isLoading, setIsLoading] = useState(false);
-  const { issueDetail }: any = useIssue();
+  const { issueDetail } = useIssue();
   const params = useParams().id;
 
   const getIssueDetail = useCallback(async () => {
     try {
       setIsLoading(true);
-      setDetail(await issueDetail(`/${params}`));
+      setDetail(await issueDetail(Number(params)));
     } catch (error) {
       console.log(error);
     } finally {
