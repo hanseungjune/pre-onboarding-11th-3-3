@@ -17,7 +17,6 @@ const IssueDetail = () => {
   const [detail, setDetail] = useState<IIssueDetail>();
   const { issueDetail }: any = useIssue();
   const params = useParams().id;
-  console.log(params);
 
   const getIssueDetail = useCallback(async () => {
     try {
@@ -33,49 +32,47 @@ const IssueDetail = () => {
 
   return (
     <IssueDetailStyle>
-      <IssueDetailInnerStyle>
-        {detail ? (
-          <>
-            <TitleAreaStyle>
-              <img src={detail.user.avatar_url} alt={detail.user.login} />
-              <IssueItem data={detail} />
-            </TitleAreaStyle>
-            <DescAreaStyle>
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-                children={detail.body}
-                components={{
-                  code({
-                    node,
-                    inline,
-                    className,
-                    style,
-                    children,
-                    ...props
-                  }: CodeProps) {
-                    const match = /language-(\w+)/.exec(className || '');
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        children={String(children).replace(/\n$/, '')}
-                        language={match[1]}
-                        style={materialDark}
-                        {...props}
-                      />
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                }}
-              />
-            </DescAreaStyle>
-          </>
-        ) : (
-          <Loading />
-        )}
-      </IssueDetailInnerStyle>
+      {detail ? (
+        <IssueDetailInnerStyle>
+          <TitleAreaStyle>
+            <img src={detail.user.avatar_url} alt={detail.user.login} />
+            <IssueItem data={detail} />
+          </TitleAreaStyle>
+          <DescAreaStyle>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+              children={detail.body}
+              components={{
+                code({
+                  node,
+                  inline,
+                  className,
+                  style,
+                  children,
+                  ...props
+                }: CodeProps) {
+                  const match = /language-(\w+)/.exec(className || '');
+                  return !inline && match ? (
+                    <SyntaxHighlighter
+                      children={String(children).replace(/\n$/, '')}
+                      language={match[1]}
+                      style={materialDark}
+                      {...props}
+                    />
+                  ) : (
+                    <Code className={className} {...props}>
+                      {children}
+                    </Code>
+                  );
+                },
+              }}
+            />
+          </DescAreaStyle>
+        </IssueDetailInnerStyle>
+      ) : (
+        <Loading />
+      )}
     </IssueDetailStyle>
   );
 };
@@ -103,7 +100,7 @@ const TitleAreaStyle = styled.div`
   justify-content: space-between;
   padding: 16px 0;
   margin-bottom: 16px;
-  border-bottom: 2px solid ${COLOR.DarkCountSpan};
+  border-bottom: 2px solid ${COLOR.DarkGray};
   gap: 16px;
 
   > div {
@@ -118,4 +115,52 @@ const TitleAreaStyle = styled.div`
 
 const DescAreaStyle = styled.div`
   padding-bottom: 52px;
+
+  h1 {
+    border-bottom: 1px solid ${COLOR.DarkCountSpan};
+    padding-bottom: 10px;
+  }
+
+  ul,
+  ol {
+    margin: 20px 25px;
+  }
+
+  ul {
+    li {
+      list-style: initial;
+    }
+  }
+
+  ol {
+    li {
+      list-style: decimal;
+    }
+  }
+
+  li {
+    margin: 7px 0;
+    p {
+      margin: 0;
+    }
+  }
+
+  p {
+    margin: 10px 0;
+    word-break: break-word;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  hr {
+    margin: 30px 0;
+  }
+`;
+
+const Code = styled.code`
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.2em 0.4em;
 `;
