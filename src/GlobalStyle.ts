@@ -1,13 +1,29 @@
 import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
+import COLOR from './constants/color';
+import normalize from 'styled-normalize';
 
 const GlobalStyle = createGlobalStyle`
-  ${reset}
+  ${normalize}
 
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    color: ${COLOR.DarkText};
+
+    &::-webkit-scrollbar {
+      width:5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color:${COLOR.DarkBorder};
+      border-radius: 10px;
+    }
+  }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    background-color: ${COLOR.DarkBodyBg};
   }
   
   ul,li {
@@ -22,9 +38,14 @@ const GlobalStyle = createGlobalStyle`
     font: inherit;
   }
 
-  input {
+  input:not([type="checkbox"]) {
     width: 100%;
     height: 100%;
+  }
+
+  a {
+    text-decoration: none;
+    color:inherit;
   }
 `;
 
