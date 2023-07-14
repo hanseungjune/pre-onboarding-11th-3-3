@@ -13,7 +13,7 @@ const Header = () => {
     owner: { login: '' },
     open_issues: 0,
   });
-  const { repository }: any = useIssue();
+  const { repository } = useIssue();
 
   const getRepository = useCallback(async () => {
     try {
