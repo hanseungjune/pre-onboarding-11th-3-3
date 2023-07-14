@@ -12,7 +12,7 @@ import InfiniteScroll from './utils/InfiniteScroll';
 const IssueList = () => {
   const [list, setList] = useState<IIssue[]>([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { issueList }: any = useIssue();
 
@@ -21,7 +21,7 @@ const IssueList = () => {
   const endRef = useRef(false);
 
   const getIssueList = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await issueList(page);
       if (response) {
@@ -32,7 +32,7 @@ const IssueList = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [issueList, page]);
 
@@ -77,7 +77,7 @@ const IssueList = () => {
             className="imptyImg"
           />
         )}
-        {loading && <Loading />}
+        {isLoading && <Loading />}
         <div ref={obsRef} />
       </IssueUlStyle>
     </IssueListStyle>
