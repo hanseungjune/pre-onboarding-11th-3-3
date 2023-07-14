@@ -5,6 +5,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 const Issue = () => {
   const location = useLocation().pathname;
+
   return (
     <IssueStyle>
       <IssueList />
@@ -23,7 +24,7 @@ export default Issue;
 
 const IssueStyle = styled.section`
   display: flex;
-  height: calc(100vh - 143px);
+  height: calc(100vh - 112px);
 `;
 
 const EmptyIssueDetailStyle = styled.div`
@@ -33,4 +34,8 @@ const EmptyIssueDetailStyle = styled.div`
   justify-content: center;
   align-items: center;
   overflow-x: hidden;
+
+  img {
+    width: 200px;
+  }
 `;
