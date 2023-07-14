@@ -60,12 +60,14 @@ const IssueList = () => {
                   />
                 </Link>
               ) : (
-                <Link to={`${issue.number}`}>
+                <Link to={`/issues/${issue.number}`}>
                   <IssueItem data={issue} />
                 </Link>
               )}
             </IssueLiStyle>
           ))
+        ) : isLoading ? (
+          <Loading />
         ) : (
           <img
             src="/images/listEmpty.png"
@@ -73,7 +75,6 @@ const IssueList = () => {
             className="imptyImg"
           />
         )}
-        {isLoading && <Loading />}
         <div ref={obsRef} />
       </IssueUlStyle>
     </IssueListStyle>

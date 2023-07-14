@@ -12,23 +12,30 @@ import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { CodeProps } from 'react-markdown/lib/ast-to-react';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import { ImWarning } from 'react-icons/im';
 
 const IssueDetail = () => {
   const [detail, setDetail] = useState<IIssueDetail>();
+  const [isLoading, setIsLoading] = useState(false);
   const { issueDetail }: any = useIssue();
   const params = useParams().id;
 
   const getIssueDetail = useCallback(async () => {
     try {
+      setIsLoading(true);
       setDetail(await issueDetail(`/${params}`));
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }, [issueDetail, params]);
 
   useEffect(() => {
     getIssueDetail();
-  }, [params, issueDetail, getIssueDetail]);
+  }, [getIssueDetail]);
+
+  console.log(detail);
 
   return (
     <IssueDetailStyle>
@@ -70,9 +77,15 @@ const IssueDetail = () => {
             />
           </DescAreaStyle>
         </IssueDetailInnerStyle>
-      ) : (
+      ) : isLoading ? (
         <Loading />
+      ) : (
+        <WarningStyle>
+          <ImWarning />
+          존재하지 않는 이슈입니다
+        </WarningStyle>
       )}
+      {/* {isLoading && <Loading />} */}
     </IssueDetailStyle>
   );
 };
@@ -163,4 +176,18 @@ const Code = styled.code`
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.1);
   padding: 0.2em 0.4em;
+`;
+
+const WarningStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #8e8e8e;
+
+  svg {
+    font-size: 6em;
+    margin-bottom: 35px;
+    fill: #8e8e8e;
+  }
 `;
