@@ -35,8 +35,6 @@ const IssueDetail = () => {
     getIssueDetail();
   }, [getIssueDetail]);
 
-  console.log(detail);
-
   return (
     <IssueDetailStyle>
       {detail ? (
@@ -85,7 +83,6 @@ const IssueDetail = () => {
           존재하지 않는 이슈입니다
         </WarningStyle>
       )}
-      {/* {isLoading && <Loading />} */}
     </IssueDetailStyle>
   );
 };
