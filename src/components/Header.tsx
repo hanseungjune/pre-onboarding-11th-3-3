@@ -61,7 +61,7 @@ const Header = () => {
 
 export default Header;
 
-const HeaderStyle = styled.div`
+const HeaderStyle = styled.header`
   border-bottom: 1px solid ${COLOR.DarkBorder};
   background-color: ${COLOR.DarkHeaderBg};
 `;
