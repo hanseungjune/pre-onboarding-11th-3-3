@@ -66,8 +66,6 @@ const IssueList = () => {
               )}
             </IssueLiStyle>
           ))
-        ) : isLoading ? (
-          <Loading />
         ) : (
           <img
             src="/images/listEmpty.png"
@@ -76,6 +74,7 @@ const IssueList = () => {
           />
         )}
         <div ref={obsRef} />
+        {isLoading && <Loading />}
       </IssueUlStyle>
     </IssueListStyle>
   );
