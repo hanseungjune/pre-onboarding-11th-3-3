@@ -38,7 +38,7 @@ const GlobalStyle = createGlobalStyle`
     font: inherit;
   }
 
-  input {
+  input:not([type="checkbox"]) {
     width: 100%;
     height: 100%;
   }
