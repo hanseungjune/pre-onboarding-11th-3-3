@@ -1,5 +1,6 @@
 export interface IRepository {
-  full_name: string;
+  name: string;
+  owner: { login: string };
   open_issues: number;
 }
 
@@ -14,11 +15,9 @@ export interface IIssue {
 
 export interface IIssueDetail extends IIssue {
   body: string;
-  user: IUser;
 }
 
 export interface IUser {
   avatar_url: string;
   login: string;
-  type: 'User' | 'Bot';
 }

@@ -9,7 +9,8 @@ import { IRepository } from 'interface/issue';
 const Header = () => {
   const location = useLocation().pathname;
   const [title, setTitle] = useState<IRepository>({
-    full_name: '',
+    name: '',
+    owner: { login: '' },
     open_issues: 0,
   });
   const { repository }: any = useIssue();
@@ -25,8 +26,6 @@ const Header = () => {
   useEffect(() => {
     getRepository();
   }, [getRepository, repository, setTitle]);
-
-  const RepoTitle = title.full_name.split('/');
 
   return (
     <HeaderStyle>
@@ -48,7 +47,7 @@ const Header = () => {
           <h1>Page not found</h1>
         ) : (
           <h1>
-            {RepoTitle[0]} <span>/</span> {RepoTitle[1]}
+            {title.owner.login} <span>/</span> {title.name}
           </h1>
         )}
       </GlobalBarStyle>
@@ -61,7 +60,7 @@ const Header = () => {
 
 export default Header;
 
-const HeaderStyle = styled.div`
+const HeaderStyle = styled.header`
   border-bottom: 1px solid ${COLOR.DarkBorder};
   background-color: ${COLOR.DarkHeaderBg};
 `;

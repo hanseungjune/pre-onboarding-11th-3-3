@@ -7,12 +7,12 @@ import IssueItem from './IssueItem';
 import { useIssue } from 'context/IssueContext';
 import { IIssue } from 'interface/issue';
 import Loading from './common/Loading';
-import InfiniteScroll from './utils/InfiniteScroll';
+import InfiniteScroll from '../utils/InfiniteScroll';
 
 const IssueList = () => {
   const [list, setList] = useState<IIssue[]>([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { issueList }: any = useIssue();
 
@@ -21,7 +21,7 @@ const IssueList = () => {
   const endRef = useRef(false);
 
   const getIssueList = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await issueList(page);
       if (response) {
@@ -32,7 +32,7 @@ const IssueList = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [issueList, page]);
 
@@ -52,22 +52,18 @@ const IssueList = () => {
         {list.length > 0 ? (
           list.map((issue, index) => (
             <IssueLiStyle key={index}>
-              <Link
-                to={
-                  (index + 1) % 5 === 0
-                    ? 'https://www.wanted.co.kr/'
-                    : `${issue.number}`
-                }
-              >
-                {(index + 1) % 5 === 0 ? (
+              {(index + 1) % 5 === 0 ? (
+                <Link to={'https://www.wanted.co.kr/'}>
                   <img
                     src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fuserweb%2Flogo_wanted_black.png&w=110&q=100"
                     alt="광고"
                   />
-                ) : (
+                </Link>
+              ) : (
+                <Link to={`/issues/${issue.number}`}>
                   <IssueItem data={issue} />
-                )}
-              </Link>
+                </Link>
+              )}
             </IssueLiStyle>
           ))
         ) : (
@@ -77,8 +73,8 @@ const IssueList = () => {
             className="imptyImg"
           />
         )}
-        {loading && <Loading />}
         <div ref={obsRef} />
+        {isLoading && <Loading />}
       </IssueUlStyle>
     </IssueListStyle>
   );
@@ -105,6 +101,7 @@ const IssueListStyle = styled.div`
 `;
 
 const IssueUlStyle = styled.ul`
+  width: 100%;
   padding: 16px;
   overflow-y: auto;
   height: calc(100% - 62px);
