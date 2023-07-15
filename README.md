@@ -140,7 +140,7 @@
 ```
 📦src
  ┣ 📂apis
- ┃ ┗ 📜issueApi.js
+ ┃ ┗ 📜issueApi.ts
  ┣ 📂components
  ┃ ┣ 📂common
  ┃ ┃ ┗ 📜Loading.tsx
@@ -154,7 +154,7 @@
  ┣ 📂context
  ┃ ┗ 📜IssueContext.tsx
  ┣ 📂httpClient
- ┃ ┗ 📜httpClient.js
+ ┃ ┗ 📜httpClient.ts
  ┣ 📂interface
  ┃ ┗ 📜issue.ts
  ┣ 📂lotties
