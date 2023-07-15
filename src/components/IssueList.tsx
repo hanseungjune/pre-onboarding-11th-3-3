@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  Fragment,
+} from 'react';
 import { styled } from 'styled-components';
 import { BsListCheck } from 'react-icons/bs';
 import COLOR from 'constants/color';
@@ -51,9 +57,9 @@ const IssueList = () => {
       <IssueUlStyle>
         {list.length > 0 ? (
           list.map((issue, index) => (
-            <>
+            <Fragment key={issue.id}>
               {index % 4 === 0 && index !== 0 && (
-                <IssueLiStyle key={index}>
+                <IssueLiStyle>
                   <Link to="https://www.wanted.co.kr/">
                     <img
                       src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fuserweb%2Flogo_wanted_black.png&w=110&q=100"
@@ -62,21 +68,12 @@ const IssueList = () => {
                   </Link>
                 </IssueLiStyle>
               )}
-              <IssueLiStyle key={index}>
-                {/* {(index + 1) % 5 === 0 ? (
-                <Link to={'https://www.wanted.co.kr/'}>
-                  <img
-                    src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fuserweb%2Flogo_wanted_black.png&w=110&q=100"
-                    alt="광고"
-                  />
-                </Link>
-              ) : ( */}
+              <IssueLiStyle>
                 <Link to={`/issues/${issue.number}`}>
                   <IssueItem data={issue} />
                 </Link>
-                {/* )} */}
               </IssueLiStyle>
-            </>
+            </Fragment>
           ))
         ) : (
           <img
