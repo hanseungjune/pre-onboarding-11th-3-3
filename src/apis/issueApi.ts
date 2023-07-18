@@ -27,7 +27,7 @@ export class IssueApi {
 
   async issueDetail(issueNum: number) {
     const response = await this.httpClient.fetch(
-      `${this.URL}/issues${issueNum}`,
+      `${this.URL}/issues/${issueNum}`,
       {
         method: 'GET',
       }
