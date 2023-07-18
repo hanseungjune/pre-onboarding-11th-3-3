@@ -12,13 +12,13 @@ const LocalNavBar = ({ openIssues }: Props) => {
   return (
     <LocalNavBarStyle>
       <ul>
-        <li>
+        <LiStyle>
           <Link to="">
             <GoIssueOpened />
             Issues
-            <span>{openIssues}</span>
+            <SpanStyle>{openIssues}</SpanStyle>
           </Link>
-        </li>
+        </LiStyle>
       </ul>
     </LocalNavBarStyle>
   );
@@ -30,44 +30,42 @@ const LocalNavBarStyle = styled.nav`
   line-height: 48px;
   padding: 0 16px;
   font-size: 0.875rem;
+`;
 
-  ul {
-    li {
-      display: flex;
-      a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 7px;
-        padding: 0 0.5rem;
-        font-weight: 600;
-        position: relative;
+const LiStyle = styled.li`
+  display: flex;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 0 0.5rem;
+    font-weight: 600;
+    position: relative;
 
-        svg {
-          font-size: 18px;
-          fill: ${COLOR.DarkGray};
-        }
+    svg {
+      font-size: 18px;
+      fill: ${COLOR.DarkGray};
+    }
 
-        span {
-          font-size: 0.75rem;
-          padding: 0 6px;
-          background-color: ${COLOR.DarkCountSpan};
-          height: 20px;
-          border-radius: 10px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        &::after {
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 2px;
-          background-color: ${COLOR.LocalNavFocus};
-          bottom: -1px;
-        }
-      }
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: ${COLOR.LocalNavFocus};
+      bottom: -1px;
     }
   }
+`;
+
+const SpanStyle = styled.span`
+  font-size: 0.75rem;
+  padding: 0 6px;
+  background-color: ${COLOR.DarkCountSpan};
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

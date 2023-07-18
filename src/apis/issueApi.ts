@@ -1,14 +1,15 @@
-const url = '/repos/facebook/react';
+import { HttpClient } from 'httpClient/httpClient';
 
 export class IssueApi {
-  private httpClient: any;
+  private httpClient: HttpClient;
+  private readonly URL = '/repos/facebook/react';
 
-  constructor(httpClient: any) {
+  constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
   }
 
   async repository() {
-    const response = await this.httpClient.fetch(url, {
+    const response = await this.httpClient.fetch(this.URL, {
       method: 'GET',
     });
     return response.json();
@@ -16,7 +17,7 @@ export class IssueApi {
 
   async issueList(page: number) {
     const response = await this.httpClient.fetch(
-      `${url}/issues?sort=comments&per_page=15&page=${page}`,
+      `${this.URL}/issues?sort=comments&per_page=15&page=${page}`,
       {
         method: 'GET',
       }
@@ -25,9 +26,12 @@ export class IssueApi {
   }
 
   async issueDetail(issueNum: number) {
-    const response = await this.httpClient.fetch(`${url}/issues${issueNum}`, {
-      method: 'GET',
-    });
+    const response = await this.httpClient.fetch(
+      `${this.URL}/issues${issueNum}`,
+      {
+        method: 'GET',
+      }
+    );
     if (response.status === 200) {
       return response.json();
     }
