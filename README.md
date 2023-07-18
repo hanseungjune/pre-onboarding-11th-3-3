@@ -290,41 +290,193 @@
   };
   ```
 
-      <br/>
+<br/>
 
-- ❌ Bad
+#### 🪄 리팩토링
 
-  1.  useEffect의 콜백함수는 바로 비동기적일 수 없습니다. 비동기적인 함수를 바로 콜백 함수로 넣을 수 없기 때문에, 즉시실행함수라는 비동기 함수를 useEffect가 실행될 때마다 생성해주고, 그 안에서 데이터를 가져오고 setDetail을 해주게 됩니다. 그리고 만든 즉시실행함수를 실행하게 됩니다. useEffect가 실행될 때마다 매번 함수가 생성되고 실행되니 매우 비효율적입니다.
+- Case 01.
 
-  ```Javascript
-    useEffect(() => {
-      (async () => {
+  - ❌ Bad
+
+    - useEffect의 콜백함수는 바로 비동기적일 수 없습니다. 비동기적인 함수를 바로 콜백 함수로 넣을 수 없기 때문에, 즉시실행함수라는 비동기 함수를 useEffect가 실행될 때마다 생성해주고, 그 안에서 데이터를 가져오고 setDetail을 해주게 됩니다. 그리고 만든 즉시실행함수를 실행하게 됩니다. useEffect가 실행될 때마다 매번 함수가 생성되고 실행되니 매우 비효율적입니다.
+
+    ```Javascript
+      useEffect(() => {
+        (async () => {
+          try {
+            setDetail(await issueDetail(location));
+          } catch (error) {
+            console.log(error);
+          }
+        })();
+      }, [location, issueDetail]);
+    ```
+
+  - ⭕ Good
+
+    - useCallback을 활용하면, useCallback안에서 데이터를 가져오는 콜백 함수를 getIssueDetail에 넣어주고, useEffect안에서는 getIssueDetail만 호출을 해주면 코드가 훨씬 깔끔해지고, 로직도 분리되며 가독성도 올라가는 효과를 얻을 수 있습니다.
+
+    ```Javascript
+      const getIssueDetail = useCallback(async () => {
         try {
           setDetail(await issueDetail(location));
         } catch (error) {
           console.log(error);
         }
-      })();
-    }, [location, issueDetail]);
-  ```
+      }, [issueDetail, location]);
 
-- ⭕ Good
+      useEffect(() => {
+        getIssueDetail();
+      }, [location, issueDetail, getIssueDetail]);
+    ```
 
-  1.  useCallback을 활용하면, useCallback안에서 데이터를 가져오는 콜백 함수를 getIssueDetail에 넣어주고, useEffect안에서는 getIssueDetail만 호출을 해주면 코드가 훨씬 깔끔해지고, 로직도 분리되며 가독성도 올라가는 효과를 얻을 수 있습니다.
+- Case 02.
 
-  ```Javascript
-    const getIssueDetail = useCallback(async () => {
-      try {
-        setDetail(await issueDetail(location));
-      } catch (error) {
-        console.log(error);
+  - ❌ Bad
+
+    - Class 내부에서만 사용하는 상수는 Class 안에서만 사용합니다.
+
+    ```Javascript
+    const url = '/repos/facebook/react';
+
+    export class IssueApi {
+      private httpClient: HttpClient;
+
+      constructor(httpClient: HttpClient) {
+      this.httpClient = httpClient;
       }
-    }, [issueDetail, location]);
 
-    useEffect(() => {
-      getIssueDetail();
-    }, [location, issueDetail, getIssueDetail]);
-  ```
+      // ...
+    }
+    ```
+
+  - ⭕ Good
+
+    - 클래스는 내부에 데이터를 가지고 있을 수 있기에, 굳이 바깥 범위인 파일에 놔두는 것 보다 내부에서만 사용되는 값이라면 내부로 가져와서 저장해두는 것이 효율적입니다.
+    - 이 과정에서 외부로 노출될 필요가 없어 private + 수정되지 않는 상수이기에 readonly를 적용합니다.
+
+    ```Javascript
+    export class IssueApi {
+    private httpClient: HttpClient;
+    private readonly URL = '/repos/facebook/react';
+
+    constructor(httpClient: HttpClient) {
+    this.httpClient = httpClient;
+    }
+
+    // ...
+    }
+    ```
+
+- Case 03.
+
+  - ❌ Bad
+
+    - 유지보수를 위해 CSS-in-JS와 className을 이용한 스타일링 혼용은 금지합니다.
+
+    ```JavaScript
+    const IssueUlStyle = styled.ul`
+      width: 100%;
+      padding: 16px;
+      overflow-y: auto;
+      height: calc(100% - 62px);
+      position: relative;
+
+      .imptyImg {
+        width: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    `;
+    ```
+
+    - 유지보수를 위해 tag selector 사용을 지양합니다.
+
+    ```JavaScript
+    const IssueLiStyle = styled.li`
+      padding: 15px 10px;
+      border-radius: 10px;
+
+      a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        img {
+          background-color: #fff;
+          height: 100%;
+          padding: 0 35%;
+        }
+      }
+
+      &:hover {
+        background-color: ${COLOR.DarkHover};
+
+        h3 {
+          text-decoration: underline;
+          color: ${COLOR.White};
+        }
+      }
+    `;
+    ```
+
+  - ⭕ Good
+
+    - styled-component를 이용해서 스타일링이 된 태그들은 해당 definition으로 이동해서 바로 스타일링을 확인이 가능한데 className으로 선언한 부분은 바로 definition으로 이동이 불가능해서 스타일링 파악하기에 어려움이 있습니다.
+    - 위의 내용에 덧붙여서 className을 이용한 스타일링의 nesting depth가 깊어지는 경우에는 더 더욱 찾기가 어려워집니다.
+    - depth가 깊어지는 경우 뿐만 아니라 1depth로도 className을 이용한 스타일 선언부가 길어지는 경우에도 해당 스타일링을 찾기 어려워집니다.
+    - 위의 사항들로 인해서 CSS in JS(styled-components 등)을 이용한 스타일링을 하는 경우에는 라이브러리 사용상 강제되는 등의 불가피한 부분을 제외하고는 className을 통한 스타일링은 최대한 지양하는게 권장됩니다.
+
+    ```JavaScript
+    const IssueUlStyle = styled.ul`
+      width: 100%;
+      padding: 16px;
+      overflow-y: auto;
+      height: calc(100% - 62px);
+      position: relative;
+    `;
+
+    const EmptyImgStyle = styled.img`
+      width: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    `;
+    ```
+
+    - a, img 태그 처럼 빈번히 사용되는 태그로 스타일을 주는 건 depth에 무관하게 적용되어 의도치 않은 스타일링이 될 수 있습니다.
+    - tag selector는 해당 요소 뿐만 아니라 동일한 태그로 선언된 다른 요소들에게도 영향을 미칠 여지가 너무 많기 때문에 추후 유지보수에 악영향을 미칠 수 있습니다.
+
+    ```JavaScript
+    const IssueLiStyle = styled.li`
+      padding: 15px 10px;
+      border-radius: 10px;
+
+      a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      &:hover {
+        background-color: ${COLOR.DarkHover};
+
+        h3 {
+          text-decoration: underline;
+          color: ${COLOR.White};
+        }
+      }
+    `;
+
+    const ImgStyle = styled.img`
+      background-color: #fff;
+      height: 100%;
+      padding: 0 35%;
+    `;
+    ```
 
 <br/>
 
@@ -349,7 +501,7 @@
     <tr>
       <td align="center">주희</td>
       <td>
-      - 사전 과제보다 성장했습니다. TypeScript 사용, Context API 활용한 API 연동, 라우트 중첩을 프로젝트에 적용할 수 있는 기회였습니다. 
+      - 사전 과제보다 성장했습니다. TypeScript 사용, Context API 활용한 API 연동, 라우트 중첩을 프로젝트에 적용할 수 있는 기회였습니다.
       </td>
       <td>
       - 시간이 너무 촉박했습니다 😭
@@ -393,3 +545,4 @@
     </tr>
   </tbody>
 </table>
+```

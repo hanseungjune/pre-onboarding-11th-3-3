@@ -40,7 +40,7 @@ const IssueDetail = () => {
       {detail ? (
         <IssueDetailInnerStyle>
           <TitleAreaStyle>
-            <img src={detail.user.avatar_url} alt={detail.user.login} />
+            <ImgStyle src={detail.user.avatar_url} alt={detail.user.login} />
             <IssueItem data={detail} />
           </TitleAreaStyle>
           <DescAreaStyle>
@@ -99,10 +99,6 @@ const IssueDetailStyle = styled.div`
 const IssueDetailInnerStyle = styled.div`
   padding-top: 36px;
   width: 65%;
-
-  img {
-    width: 100%;
-  }
 `;
 
 const TitleAreaStyle = styled.div`
@@ -116,11 +112,11 @@ const TitleAreaStyle = styled.div`
   > div {
     margin-right: auto;
   }
+`;
 
-  img {
-    width: 50px;
-    border-radius: 50%;
-  }
+const ImgStyle = styled.img`
+  width: 50px;
+  border-radius: 50%;
 `;
 
 const DescAreaStyle = styled.div`

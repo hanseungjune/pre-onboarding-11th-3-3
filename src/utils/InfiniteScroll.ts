@@ -1,4 +1,9 @@
-import React, { MutableRefObject, RefObject, useCallback, useEffect } from 'react';
+import React, {
+  MutableRefObject,
+  RefObject,
+  useCallback,
+  useEffect,
+} from 'react';
 
 interface Props {
   preventRef: MutableRefObject<boolean>;
@@ -7,13 +12,16 @@ interface Props {
 }
 
 const InfiniteScroll = ({ preventRef, obsRef, setPage }: Props) => {
-  const obsHandler = useCallback((entries: IntersectionObserverEntry[]) => {
-    const target = entries[0];
-    if (target.isIntersecting && preventRef.current) {
-      preventRef.current = false;
-      setPage(prev => prev + 1);
-    }
-  },[preventRef, setPage]);
+  const obsHandler = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && preventRef.current) {
+        preventRef.current = false;
+        setPage(prev => prev + 1);
+      }
+    },
+    [preventRef, setPage]
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(obsHandler, {
@@ -27,6 +35,5 @@ const InfiniteScroll = ({ preventRef, obsRef, setPage }: Props) => {
     };
   }, [obsHandler, obsRef]);
 };
-
 
 export default InfiniteScroll;
