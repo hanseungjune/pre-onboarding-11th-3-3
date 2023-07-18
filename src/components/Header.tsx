@@ -44,11 +44,11 @@ const Header = () => {
           </svg>
         </Link>
         {location === '/notFound' ? (
-          <h1>Page not found</h1>
+          <H1Style>Page not found</H1Style>
         ) : (
-          <h1>
-            {title.owner.login} <span>/</span> {title.name}
-          </h1>
+          <H1Style>
+            {title.owner.login} <SpanStyle>/</SpanStyle> {title.name}
+          </H1Style>
         )}
       </GlobalBarStyle>
       {location !== '/notFound' && (
@@ -74,17 +74,17 @@ const GlobalBarStyle = styled.div<{
   font-size: 14px;
   padding: ${({ location }) =>
     location === '/notFound' ? '16px' : '16px 16px 8px'};
+`;
 
-  h1 {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    font-weight: normal;
+const H1Style = styled.h1`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: normal;
+`;
 
-    span {
-      color: #7d8590;
-      padding: 0 8px;
-      font-size: 18px;
-    }
-  }
+const SpanStyle = styled.span`
+  color: #7d8590;
+  padding: 0 8px;
+  font-size: 18px;
 `;

@@ -50,10 +50,10 @@ const IssueList = () => {
 
   return (
     <IssueListStyle>
-      <h2>
+      <H2Style>
         <BsListCheck />
         Issue List
-      </h2>
+      </H2Style>
       <IssueUlStyle>
         {list.length > 0 ? (
           list.map((issue, index) => (
@@ -61,7 +61,7 @@ const IssueList = () => {
               {index % 4 === 0 && index !== 0 && (
                 <IssueLiStyle>
                   <Link to="https://www.wanted.co.kr/">
-                    <img
+                    <ImgStyle
                       src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fuserweb%2Flogo_wanted_black.png&w=110&q=100"
                       alt="광고"
                     />
@@ -76,11 +76,7 @@ const IssueList = () => {
             </Fragment>
           ))
         ) : (
-          <img
-            src="/images/listEmpty.png"
-            alt="listEmpty"
-            className="imptyImg"
-          />
+          <EmptyImgStyle src="/images/listEmpty.png" alt="listEmpty" />
         )}
         <div ref={obsRef} />
         {isLoading && <Loading />}
@@ -94,18 +90,18 @@ export default IssueList;
 const IssueListStyle = styled.div`
   width: 430px;
   border-right: 1px solid ${COLOR.DarkBorder};
+`;
 
-  h2 {
-    padding: 16px;
-    font-size: 16px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+const H2Style = styled.h2`
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-    svg {
-      font-size: 30px;
-    }
+  svg {
+    font-size: 30px;
   }
 `;
 
@@ -115,14 +111,14 @@ const IssueUlStyle = styled.ul`
   overflow-y: auto;
   height: calc(100% - 62px);
   position: relative;
+`;
 
-  .imptyImg {
-    width: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+const EmptyImgStyle = styled.img`
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const IssueLiStyle = styled.li`
@@ -133,12 +129,6 @@ const IssueLiStyle = styled.li`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    img {
-      background-color: #fff;
-      height: 100%;
-      padding: 0 35%;
-    }
   }
 
   &:hover {
@@ -149,4 +139,10 @@ const IssueLiStyle = styled.li`
       color: ${COLOR.White};
     }
   }
+`;
+
+const ImgStyle = styled.img`
+  background-color: #fff;
+  height: 100%;
+  padding: 0 35%;
 `;

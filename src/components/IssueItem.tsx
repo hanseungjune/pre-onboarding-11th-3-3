@@ -1,7 +1,7 @@
 import COLOR from 'constants/color';
 import { IIssue } from 'interface/issue';
 import React from 'react';
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { BiMessage } from 'react-icons/bi';
 
 interface Props {
@@ -14,8 +14,8 @@ const IssueItem = ({ data }: Props) => {
   return (
     <>
       <TitleAreaStyle>
-        <h3>{`#${data.number} ${data.title}`}</h3>
-        <p>{`updated on ${date} by ${data.user.login}`}</p>
+        <H3Style>{`#${data.number} ${data.title}`}</H3Style>
+        <PStyle>{`updated on ${date} by ${data.user.login}`}</PStyle>
       </TitleAreaStyle>
       {data.comments > 0 && (
         <CommentStyle>
@@ -29,29 +29,30 @@ const IssueItem = ({ data }: Props) => {
 
 export default IssueItem;
 
+export const TextOverflow = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+`;
+
 const TitleAreaStyle = styled.div`
   width: 82%;
+`;
 
-  h3 {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 10px;
-    line-height: 19px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    word-break: break-all;
-  }
+const H3Style = styled.h3`
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  line-height: 19px;
+  ${TextOverflow}
+`;
 
-  p {
-    font-size: 12px;
-    color: ${COLOR.DarkSubText};
-    line-height: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    word-break: break-all;
-  }
+const PStyle = styled.p`
+  font-size: 12px;
+  color: ${COLOR.DarkSubText};
+  line-height: 14px;
+  ${TextOverflow}
 `;
 
 const CommentStyle = styled.span`
