@@ -181,114 +181,117 @@
 
 #### 💥트러블 슈팅
 
-- 이슈
+- Case 01.
 
-  - base url 다음에 임의의 값을 넣어주면 `/notFound`페이지로 바로 넘어가지 않고, 에러창이 뜹니다. 새로고침해야 `/notFound`페이지가 렌더됩니다.
+   - 이슈
+   
+     - base url 다음에 임의의 값을 넣어주면 `/notFound`페이지로 바로 넘어가지 않고, 에러창이 뜹니다. 새로고침해야 `/notFound`페이지가 렌더됩니다.
+   
+     ```Javascript
+     const router = createBrowserRouter([
+       {
+         path: '/',
+         element: <App />,
+         children: [
+           {
+             path: '/',
+             element: <Issue />,
+             children: [
+               {
+                 path: '/:id',
+                 element: <IssueDetail />,
+                 errorElement: <Navigate to="/notFound" />,
+               },
+             ],
+           },
+           { path: '/notFound', element: <NotFound /> },
+           { path: '*', element: <Navigate to="/notFound" /> },
+         ],
+       },
+     ]);
+     ```
+   
+   - 해결
+   
+     - 비정상적으로 접근을 하면 바로 데이터 요청 없이 바로 "404 Not found"페이지로 이동을 해야하는데 데이터 요청을 하니까 GitHub API에서는 `documentation_url: "https://docs.github.com/rest/issues/issues#get-an-issue" message: "Not Found"` 에러가 출력됩니다.
+     - 디테일 페이지를 불러올 때, 디테일 페이지를 불러오는 id값 앞에 `/issues` 경로를 추가합니다.
+     - base url 다음에 임의의 값을 넣어주면 "404 Not found"페이지로 이동하고, `base url/issues/` 다음 임의의 값을 넣어주면 '존재하지 않는 이슈'가 화면에 출력됩니다.
+   
+     ```Javascript
+     const router = createBrowserRouter([
+     {
+       path: '/',
+       element: <App />,
+       children: [
+         {
+           path: '/',
+           element: <Issue />,
+           errorElement: <Navigate to="/notFound" />,
+           children: [
+             {
+               path: '/issues',
+               element: <Navigate to="/" />,
+             },
+             {
+               path: '/issues/:id',
+               element: <IssueDetail />,
+             },
+           ],
+         },
+         { path: '/notFound', element: <NotFound /> },
+         { path: '*', element: <Navigate to="/notFound" /> },
+       ],
+     },
+     ]);
+     ```
+- Case 02.
 
-  ```Javascript
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <App />,
-      children: [
-        {
-          path: '/',
-          element: <Issue />,
-          children: [
-            {
-              path: '/:id',
-              element: <IssueDetail />,
-              errorElement: <Navigate to="/notFound" />,
-            },
-          ],
-        },
-        { path: '/notFound', element: <NotFound /> },
-        { path: '*', element: <Navigate to="/notFound" /> },
-      ],
-    },
-  ]);
-  ```
-
-- 해결
-
-  - 비정상적으로 접근을 하면 바로 데이터 요청 없이 바로 "404 Not found"페이지로 이동을 해야하는데 데이터 요청을 하니까 GitHub API에서는 `documentation_url: "https://docs.github.com/rest/issues/issues#get-an-issue" message: "Not Found"` 에러가 출력됩니다.
-  - 디테일 페이지를 불러올 때, 디테일 페이지를 불러오는 id값 앞에 `/issues` 경로를 추가합니다.
-  - base url 다음에 임의의 값을 넣어주면 "404 Not found"페이지로 이동하고, `base url/issues/` 다음 임의의 값을 넣어주면 '존재하지 않는 이슈'가 화면에 출력됩니다.
-
-  ```Javascript
-  const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: '/',
-        element: <Issue />,
-        errorElement: <Navigate to="/notFound" />,
-        children: [
-          {
-            path: '/issues',
-            element: <Navigate to="/" />,
-          },
-          {
-            path: '/issues/:id',
-            element: <IssueDetail />,
-          },
-        ],
-      },
-      { path: '/notFound', element: <NotFound /> },
-      { path: '*', element: <Navigate to="/notFound" /> },
-    ],
-  },
-  ]);
-  ```
-
-- 이슈
-
-  - 빈값일 때 보여지는 "empty" 이미지와 데이터를 불러오는 중일 때 보여지는 "loading"이 함께 보여집니다. 빈값일 때는 "empty" 이미지만, 데이터를 불러오는 중일 때는 "loading"이 각각 따로 보여졌으면 좋겠습니다.
-
-  ```Javascript
-  const IssueDetail = () => {
-
-    // ...
-
-    return (
-      <IssueDetailStyle>
-        {detail ? (
-          // ...
-        ) : (
-          <Loading />
-        )}
-      </IssueDetailStyle>
-    );
-  };
-  ```
-
-- 해결
-
-  - 삼항연산자를 중복 사용 `(조건식(if) ? 참 : 조건식(else if) ? 참 : 거짓(else))` 하여 `detail` 데이터가 있으면 렌더링되고, 데이터를 불러오는 중일 땐 "loading"이 보이고, 데이터가 없을 땐 "empty" 이미지를 보여줍니다.
-
-  ```Javascript
-  const IssueDetail = () => {
-
-    // ...
-
-    return (
-      <IssueDetailStyle>
-        {detail ? (
-          // ...
-        ) : isLoading ? (
-          <Loading />
-        ) : (
-          <WarningStyle>
-            <ImWarning />
-            존재하지 않는 이슈입니다
-          </WarningStyle>
-        )}
-      </IssueDetailStyle>
-    );
-  };
-  ```
+   - 이슈
+   
+     - 빈값일 때 보여지는 "empty" 이미지와 데이터를 불러오는 중일 때 보여지는 "loading"이 함께 보여집니다. 빈값일 때는 "empty" 이미지만, 데이터를 불러오는 중일 때는 "loading"이 각각 따로 보여졌으면 좋겠습니다.
+   
+     ```Javascript
+     const IssueDetail = () => {
+   
+       // ...
+   
+       return (
+         <IssueDetailStyle>
+           {detail ? (
+             // ...
+           ) : (
+             <Loading />
+           )}
+         </IssueDetailStyle>
+       );
+     };
+     ```
+   
+   - 해결
+   
+     - 삼항연산자를 중복 사용 `(조건식(if) ? 참 : 조건식(else if) ? 참 : 거짓(else))` 하여 `detail` 데이터가 있으면 렌더링되고, 데이터를 불러오는 중일 땐 "loading"이 보이고, 데이터가 없을 땐 "empty" 이미지를 보여줍니다.
+   
+     ```Javascript
+     const IssueDetail = () => {
+   
+       // ...
+   
+       return (
+         <IssueDetailStyle>
+           {detail ? (
+             // ...
+           ) : isLoading ? (
+             <Loading />
+           ) : (
+             <WarningStyle>
+               <ImWarning />
+               존재하지 않는 이슈입니다
+             </WarningStyle>
+           )}
+         </IssueDetailStyle>
+       );
+     };
+     ```
 
 <br/>
 
